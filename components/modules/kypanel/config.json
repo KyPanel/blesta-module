@@ -1,0 +1,29 @@
+{
+    "version": "1.0.0",
+    "name": "Kypanel.name",
+    "description": "Kypanel.description",
+    "authors": [
+        {
+            "name": "KyPanel",
+            "url": "https://kypanel.com"
+        }
+    ],
+    "package": {
+        "name_key": "kypanel_domain"
+    },
+    "service": {
+        "name_key": "kypanel_domain"
+    },
+    "module": {
+        "row": "Kypanel.module_row",
+        "rows": "Kypanel.module_row_plural",
+        "group": "Kypanel.module_group",
+        "row_key": "server_name"
+    },
+    "email_tags": {
+        "module": ["host_name"],
+        "package": ["package"],
+        "service": ["kypanel_domain", "kypanel_username", "kypanel_password"]
+    },
+    "logo": "views/default/images/logo.png"
+}

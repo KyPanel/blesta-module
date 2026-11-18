@@ -1,0 +1,4 @@
+<div class="alert alert-danger">
+    <?php $this->_('Kypanel.login_failed'); ?>
+    <?php if (!empty($error)) { ?><br><small><?php echo $this->Html->safe($error); ?></small><?php } ?>
+</div>

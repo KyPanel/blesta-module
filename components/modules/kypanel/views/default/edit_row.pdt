@@ -1,0 +1,4 @@
+<?php
+// same form as add_row
+$editing = true;
+include __DIR__ . DIRECTORY_SEPARATOR . 'add_row.pdt';

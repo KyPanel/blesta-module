@@ -1,0 +1,109 @@
+<?php
+$this->Widget->clear();
+$this->Widget->setLinkButtons([
+    [
+        'name' => $this->_('Kypanel.add_module_row', true),
+        'attributes' => ['href' => $this->base_uri . 'settings/company/modules/addrow/' . $module->id],
+    ],
+    [
+        'name' => $this->_('Kypanel.add_module_group', true),
+        'attributes' => ['href' => $this->base_uri . 'settings/company/modules/addgroup/' . $module->id],
+    ],
+]);
+$this->Widget->setTabs([
+    [
+        'name' => $this->_('Kypanel.manage.tab_rows', true),
+        'current' => true,
+        'attributes' => ['href' => '#kypanel_rows', 'data-bs-toggle' => 'tab', 'role' => 'tab'],
+    ],
+    [
+        'name' => $this->_('Kypanel.manage.tab_groups', true),
+        'current' => false,
+        'attributes' => ['href' => '#kypanel_groups', 'data-bs-toggle' => 'tab', 'role' => 'tab'],
+    ],
+]);
+$this->Widget->setBodyWrapper(false);
+$this->Widget->create(
+    $this->_('AdminCompanyModules.manage.boxtitle_manage', true, $this->Html->safe($module->name ?? '')),
+    ['id' => 'manage_kypanel']
+);
+
+$rows = $module->rows ?? [];
+$groups = $module->groups ?? [];
+?>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="kypanel_rows" role="tabpanel">
+        <?php if ($rows) { ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><?php $this->_('Kypanel.manage.rows.name'); ?></th>
+                    <th><?php $this->_('Kypanel.manage.rows.host'); ?></th>
+                    <th><?php $this->_('Kypanel.manage.options'); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($rows as $row) { ?>
+                <tr>
+                    <td><?php echo $this->Html->safe($row->meta->server_name ?? ''); ?></td>
+                    <td><?php echo $this->Html->safe(($row->meta->host_name ?? '') . ':' . ($row->meta->port ?? '7711')); ?></td>
+                    <td>
+                        <a href="<?php echo $this->Html->safe($this->base_uri . 'settings/company/modules/editrow/' . $module->id . '/' . $row->id . '/'); ?>"
+                           class="btn btn-sm btn-outline-secondary" title="<?php $this->_('Kypanel.manage.edit'); ?>"><i class="bi bi-pencil"></i></a>
+                        <?php
+                        $this->Form->create($this->base_uri . 'settings/company/modules/deleterow/', ['class' => 'd-inline']);
+                        $this->Form->fieldHidden('id', $module->id);
+                        $this->Form->fieldHidden('row_id', $row->id);
+                        ?>
+                        <button type="button" class="btn btn-sm btn-outline-danger modal-confirm-delete"
+                                data-confirm-message="<?php echo $this->Html->safe($this->_('Kypanel.manage.rows.confirm_delete', true)); ?>"
+                                title="<?php $this->_('Kypanel.manage.delete'); ?>"><i class="bi bi-trash"></i></button>
+                        <?php $this->Form->end(); ?>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+        <?php } else { ?>
+        <div class="card-body text-center text-muted py-5"><?php $this->_('Kypanel.manage.rows.empty'); ?></div>
+        <?php } ?>
+    </div>
+
+    <div class="tab-pane fade" id="kypanel_groups" role="tabpanel">
+        <?php if ($groups) { ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><?php $this->_('Kypanel.manage.groups.name'); ?></th>
+                    <th><?php $this->_('Kypanel.manage.groups.servers'); ?></th>
+                    <th><?php $this->_('Kypanel.manage.options'); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($groups as $group) { ?>
+                <tr>
+                    <td><?php echo $this->Html->safe($group->name ?? ''); ?></td>
+                    <td><?php echo count($group->rows ?? []); ?></td>
+                    <td>
+                        <a href="<?php echo $this->Html->safe($this->base_uri . 'settings/company/modules/editgroup/' . $module->id . '/' . $group->id . '/'); ?>"
+                           class="btn btn-sm btn-outline-secondary" title="<?php $this->_('Kypanel.manage.edit'); ?>"><i class="bi bi-pencil"></i></a>
+                        <?php
+                        $this->Form->create($this->base_uri . 'settings/company/modules/deletegroup/', ['class' => 'd-inline']);
+                        $this->Form->fieldHidden('id', $module->id);
+                        $this->Form->fieldHidden('group_id', $group->id);
+                        ?>
+                        <button type="button" class="btn btn-sm btn-outline-danger modal-confirm-delete"
+                                data-confirm-message="<?php echo $this->Html->safe($this->_('Kypanel.manage.groups.confirm_delete', true)); ?>"
+                                title="<?php $this->_('Kypanel.manage.delete'); ?>"><i class="bi bi-trash"></i></button>
+                        <?php $this->Form->end(); ?>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+        <?php } else { ?>
+        <div class="card-body text-center text-muted py-5"><?php $this->_('Kypanel.manage.groups.empty'); ?></div>
+        <?php } ?>
+    </div>
+</div>
+<?php $this->Widget->end(); ?>
